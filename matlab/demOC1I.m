@@ -82,9 +82,9 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
       model.W = nppcaUpdateW(model, expectations, varY, Y);
       
      case 'sigma'
-%      model.sigma = nppcaNewtonUpdateSigma(model,expectations,varY, Y);
-      model.sigma = scg('nppcaSigmaObjective', model.sigma, options.optimiser, ...
-                        'nppcaSigmaGradient', model, expectations, varY, Y);
+      model.sigma = nppcaNewtonUpdateLogSigma(model,expectations,varY, Y);
+%      model.sigma = scg('nppcaSigmaObjective', model.sigma, options.optimiser, ...
+%                        'nppcaSigmaGradient', model, expectations, varY, Y);
      
      case 'estep'
       model = nppcaRemoveRedundancy(model);
@@ -118,8 +118,8 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
     set(ppcaCovHandle, 'Xdata', mu(1)*ones(1,size(theta, 2))+ellipse(1,:), 'Ydata', mu(2)*ones(1,size(theta, 2))+ellipse(2,:));
     drawnow
     if counter < 5
-      fprintf('Press any key to continue\n');
-      pause
+%      fprintf('Press any key to continue\n');
+%      pause
     end
   end
   fprintf('Iteration number: %d\n', counter);

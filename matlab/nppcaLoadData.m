@@ -24,7 +24,8 @@ switch dataset
                        'data/signalOC1A.txt']);
    
    alphaLim = 1e-6;
-   
+%   alpha = alpha(1:1000,:);
+
    alpha(find(alpha<1e-6)) = 1e-6;
    
    Y = digamma(alpha);

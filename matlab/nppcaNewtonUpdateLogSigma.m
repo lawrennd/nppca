@@ -1,6 +1,6 @@
 function sigma = nppcaNewtonUpdateLogSigma(model, expectations, varY, Y)
 
-% NPPCANEWTONUPDATESIGMA performs a Newton update for the sigma dependence of the likelihood.
+% NPPCANEWTONUPDATELOGSIGMA performs a Newton update for the logsigma dependence of the likelihood.
 
 % NPPCA
 sigma = model.sigma;
@@ -57,15 +57,18 @@ for i = 1:numData
   S1(i) = (-16*expectations.x(i, :)*model.W'*F3*(Y(i, :) - model.mu)')*sigma;
   curvature(i) = S(i)+Z(i)+S1(i)+S2(i);
 end
+l=log(sigma);
 Grad = 0.5*sum(Sigma);
-Grad = nppcaSigmaGradient(sigma, model, expectations, varY, Y)*sigma/2;
+%Grad = nppcaSigmaGradient(sigma, model, expectations, varY, Y)*sigma/2;
 Curv = (0.5*sum(curvature)*sigma + Grad/sigma)*sigma*sigma/4;
-if Curv < 0
-  step = sign(grad)*model.sigma/2;
-  fprintf('Curvature is %2.4f. Gradient %f, setting step to %f\n', ...
-          Curv, Grad, step);
-end
+%if Curv < 0
+%  step = sign(grad)*model.sigma/2;
+%  fprintf('Curvature is %2.4f. Gradient %f, setting step to %f\n', ...
+%          Curv, Grad, step);
+%end
 %/~
 
 %~/
-step=Grad/Curv;
+step.l=Grad*exp(l)/(Curv*exp(2*l)+Grad*exp(l));
+
+step=exp(l-step.l);

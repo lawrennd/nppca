@@ -22,10 +22,11 @@ for i = 1:numData
   for j = 1:dataDim
     s3(i, j) = Binv(j)*model.W(j,:)*expectations.xxT(:,:,i)*model.W(j,:)';     
   end
-  s2 = sum(s3,2);
+
   trxHatCxHatT(i) = traceProduct(expectations.xxT(:, :, i), model.Cinv) ...
       - 2*expectations.x(i, :)*model.Cinv*model.m' + model.m*model.Cinv*model.m';
 end
+  s2 = sum(s3,2);
 f = 0.5*sum(z + trxHatCxHatT + s - 2*s1 + s2) + ...
     - 0.5*numData*logdet(model.Cinv);
 f = f - 0.5*sum(expectations.logDetCov);

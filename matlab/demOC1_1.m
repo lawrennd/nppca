@@ -87,7 +87,7 @@ while  (maxDeltaL > 1e-5*checkEvery & counter < maxIters) ...
   %                         'nppcaSigmaGradient',model, expectations, varY, Y);
   %~/
   if counter < initIters | ~rem(counter, checkEvery)
-    model.sigma = nppcaNewtonUpdateSigma(model,expectations,varY, Y);
+    model.sigma = nppcaNewtonUpdateLogSigma(model,expectations,varY, Y);
     fprintf('Ahhh ... sigma is %2.4f\n', model.sigma);
     if stepChecks
       [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
