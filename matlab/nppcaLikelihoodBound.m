@@ -24,4 +24,6 @@ for i = 1:numData
   end
   s2 = sum(s3,2);
 end
-f = sum(z + expectations.xTx + s - 2*s1 + s2);
+f = 0.5*sum(z + expectations.xTx + s - 2*s1 + s2);
+f = f - 0.5*sum(expectations.logDetCov);
+

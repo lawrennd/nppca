@@ -101,8 +101,7 @@ tic
     oldL = L;
     if deltaL < 0
       warning(['Likelihood drop of ' num2str(deltaL) ' after update of sigma.']);
-    end
-    
+    end 
     expectations = nppcaEstep(model, expectations, varY, Y);  
     L = nppcaLikelihoodBound(model, expectations, varY, Y);
 %    deltaL = 1;
