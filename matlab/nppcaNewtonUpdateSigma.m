@@ -23,7 +23,9 @@ while deltaL1 > 1e-3 & counter2 <= 10
   end
   deltaL1 = deltaL;
   sigma = sigma - 2*step;
-  fprintf('Now Sigma is %2.4f\n', sigma);
+  %/~
+  %fprintf('Now Sigma is %2.4f\n', sigma);
+  %~/
 end
 function step = newtonStep(sigma, model, expectations, B, X)
 
@@ -56,14 +58,11 @@ for i = 1:numData
 end
 Grad = sum(Sigma);
 Curv = sum(curvature)*sigma + sum(Sigma)/sigma;
-fprintf('Ohhh, the curvature is %2.4f! The gradient is %2.4f\n', Curv, ...
-        Grad);
+%/~
+%fprintf('Ohhh, the curvature is %2.4f! The gradient is %2.4f\n', Curv, ...
+%        Grad);
+%~/
 if Curv < 0
   Curv = 1/eta;
 end
 step=Grad/Curv;
-% if abs(step) > 0.1*sigma
-%   g = 0.2*step;
-% else
-%   g = step;
-% end

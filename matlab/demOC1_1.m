@@ -4,7 +4,8 @@
 randn('seed', 2e5);
 rand('seed', 2e5);
 
-display = 0;
+stepChecks = 0; % Whether to check likelihood after each update.
+display = 1; % whether or not to display progress in a figure.
 [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
                     'data/signalOC1A.txt']);
 
@@ -17,13 +18,12 @@ Y = digamma(alpha(:, 1:2));
 varY = trigamma(alpha(:, 1:2));
 
 numData = size(Y, 1);
-
 dataDim = size(Y, 2);
 latentDim = 1;
 
 
 % Number of EM iterations.
-maxIters = 9;
+maxIters = 50;
 options = foptions; % optimisation options for Sigma.
 
 % Initialise the model.
@@ -65,45 +65,40 @@ oldL = nppcaLikelihoodBound(model, expectations, varY, Y);
 maxDeltaL = 1;
 
 counter=0;
-while  maxDeltaL > 1e-3 & counter < maxIters
+while  maxDeltaL > 1e-5 & counter < maxIters
   maxDeltaL = 0;
   counter=counter+1;
     
   model.mu = nppcaUpdateMu(model, expectations, varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of mu.']);
+  if stepChecks
+    [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                  varY, Y, oldL, 'mu');
+    maxDeltaL = max([maxDeltaL deltaL]);
   end
-  maxDeltaL = max([maxDeltaL deltaL]);
 
   model.W = nppcaUpdateW(model, expectations, varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of w.']);
+  if stepChecks
+    [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                  varY, Y, oldL, 'W');
+    maxDeltaL = max([maxDeltaL deltaL]);
   end
-  maxDeltaL = max([maxDeltaL deltaL]);
-
+  
   model.sigma = nppcaNewtonUpdateSigma(model,expectations,varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of sigma.']);
+  if stepChecks
+    [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                  varY, Y, oldL, 'sigma');
+    maxDeltaL = max([maxDeltaL deltaL]);
   end
-  maxDeltaL = max([maxDeltaL deltaL]);
 
   expectations = nppcaEstep(model, expectations, varY, Y);  
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after E step.']);
+  if stepChecks
+    [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                  varY, Y, oldL, 'estep');
+    maxDeltaL = max([maxDeltaL deltaL]);
+  else
+    [maxDeltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                  varY, Y, oldL, 'estep');
   end
-  maxDeltaL = max([maxDeltaL deltaL]);
   
   
   % plots the data points with the respective (averaged) errors
