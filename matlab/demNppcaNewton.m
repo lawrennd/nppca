@@ -95,7 +95,7 @@ tic
     
     %  model.sigma = quasinew('nppcaSigmaObjective',model.sigma, options, ...
     %'nppcaSigmaGradient',model, expectations, varY, Y);
-    model.sigma = newtonUpdate(model,expectations,varY, Y);
+    model.sigma = nppcaNewtonUpdateSigma(model,expectations, varY, Y);
     L = nppcaLikelihoodBound(model, expectations, varY, Y);
     deltaL = oldL - L;
     oldL = L;

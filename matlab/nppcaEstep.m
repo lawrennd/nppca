@@ -2,6 +2,8 @@ function expectations = nppcaEstep(model, expectations, B, X)
 
 % NPPCAESTEP Estep for the noisy probabilistic PCA.
 
+% NPPCA
+
 dataDim = size(X, 2);
 latentDim = size(expectations.x, 2);
 numData = size(X, 1);
