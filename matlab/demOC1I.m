@@ -9,19 +9,12 @@ latentDim = 4;
 
 % Set up the options.
 options = nppcaOptions;
-options.display = 2; % Display progress in a figure.
 
 % Load first 20 points from OC1 data.
-[Y, varY] = nppcaLoadData('OC1_20');
+[Y, varY] = nppcaLoadData('OC1');
 
 % Initialise the model --- reset to PCA.
 [model, expectations] = nppcaInit(Y, varY, latentDim);
-% Reset initialisation to start with PCA.
-model.mu = mean(Y);
-[sigma2, U, D] = ppca(cov(Y), latentDim);
-model.W = U*diag(sqrt(D));
-model.sigma = sqrt(sigma2);
-
 
 if options.display > 1
   % Plot the data and ellipses indicating uncertainty.

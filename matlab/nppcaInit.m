@@ -1,17 +1,28 @@
-function model = nppcaInit(X, varX, latentDim);
+function [model, expectations] = nppcaInit(Y, varY, latentDim);
 
 % NPPCAINIT Initialise a Noisy probabilistic PCA model.
 
 % NPPCA
 
-G = cov(X);
-[sigma2, V, s] = ppca(G,latentDim);
-val = sqrt(sigma2)-mean(mean(varX));
-if val < 0
-  model.sigma = 1e-6;
-else
-  model.sigma = val;
+dataDim = size(Y, 2);
+numData = size(Y, 1);
+precYPlusSigma = 1./(varY); 
+A = Y.*precYPlusSigma;
+for i = 1:size(A, 1);
+  A(i, :) = A(i, :)./sum(precYPlusSigma, 1);
 end
-model.W = V*diag(sqrt(s-model.sigma^2));  
+model.mu = sum(A, 1);
+for i = 1:size(Y, 1);
+  V(i, :) = ((Y(i, :) - model.mu).^2.*precYPlusSigma(i, :))./ ...
+            sum(precYPlusSigma,1);
+end
+model.sigma = mean(sum(V, 1)./sum(precYPlusSigma, 1));
+model.W = randn(dataDim, latentDim)*0.1;
+model.m = zeros(1, latentDim);
+model.Cinv = eye(latentDim);
+% Initialise the expectations
+expectations.x = zeros(numData, latentDim);
+expectations.xxT = zeros(latentDim, latentDim, numData);
+expectations.xTx = zeros(numData, 1);
+expectations = nppcaEstep(model, expectations, varY, Y);
 
-model.mu = mean(X);
