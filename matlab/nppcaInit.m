@@ -5,8 +5,7 @@ function model = nppcaInit(X, latentDim);
 % NPPCA
 
 G = cov(X);
-[sigma2, z, s] = ppca(G,latentDim);
+[sigma2, V, s] = ppca(G,latentDim);
 model.sigma = sqrt(sigma2);
-model.W = sqrt(s-model.sigma^2)*z(:)';  
-model.W = model.W';
-model.mu = mean(X)';
+model.W = V*sqrt(s-model.sigma^2);  
+model.mu = mean(X);
