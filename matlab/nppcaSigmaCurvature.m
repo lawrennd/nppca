@@ -15,5 +15,5 @@ for i = 1:numData
   s1(i) = (-16*expectations.x(i, :)*model.W'*F3*(X(i, :) - model.mu)')*model.sigma;
   Sigma(i) = s(i)+z(i)+s1(i)+s2(i);
 end
-g = sum(Sigma)*model.sigma + nppcaSigmaGradient(model, expectatiions, ...
+g = sum(Sigma)*model.sigma + nppcaSigmaGradient(model, expectations, ...
                                                B, X)/model.sigma;

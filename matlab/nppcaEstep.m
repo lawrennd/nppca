@@ -13,6 +13,6 @@ for i=1:numData   %computes the inverses of the matrices M_n
   expectations.xxT(:,:,i) = Sigma_x ...
       + expectations.x(i, :)'*expectations.x(i, :);
   expectations.xTx(i) = trace(expectations.xxT(:,:,i));
-  expectations.logDetCov(i) = logdet(Sigma_x);
+  expectations.logDetCov(i) = log(det(Sigma_x));
 end 
 

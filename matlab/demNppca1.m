@@ -13,7 +13,7 @@ trueW = randn(dataDim, latentDim)*2;
 trueX = randn(numData, latentDim);
 trueSigma2 = 0.01;
 trueY = trueX*trueW';
-precisionY = gammarnd(1, 1, numData, dataDim);
+precisionY = gamrnd(1, 1, numData, dataDim);
 varY = 1./precisionY;
 Y = trueY ...
     + randn(numData,dataDim)*sqrt(trueSigma2) ...
@@ -72,40 +72,42 @@ oldL = nppcaLikelihoodBound(model, expectations, varY, Y);
 deltaL = 1;
 
 counter=0;
-while  deltaL > 1e-5 & counter < maxIters
-  counter=counter+1;
+tic
+  while  deltaL > 1e-5 & counter < maxIters
   
-  model.mu = nppcaUpdateMu(model, expectations, varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of mu.']);
-  end
-
-  model.W = nppcaUpdateW(model, expectations, varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of w.']);
-  end
+    counter=counter+1;
     
-  model.sigma = quasinew('nppcaSigmaObjective',model.sigma, options, ...
-                  'nppcaSigmaGradient',model, expectations, varY, Y);
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = oldL - L;
-  oldL = L;
-  if deltaL < 0
-    warning(['Likelihood drop of ' num2str(deltaL) ' after update of sigma.']);
-  end
-  
-  expectations = nppcaEstep(model, expectations, varY, Y);  
-  L = nppcaLikelihoodBound(model, expectations, varY, Y);
-  deltaL = 1;
-  oldL = L;
-  
-  
+    model.mu = nppcaUpdateMu(model, expectations, varY, Y);
+    L = nppcaLikelihoodBound(model, expectations, varY, Y);
+    deltaL = oldL - L;
+    oldL = L;
+    if deltaL < 0
+      warning(['Likelihood drop of ' num2str(deltaL) ' after update of mu.']);
+    end
+    
+    model.W = nppcaUpdateW(model, expectations, varY, Y);
+    L = nppcaLikelihoodBound(model, expectations, varY, Y);
+    deltaL = oldL - L;
+    oldL = L;
+    if deltaL < 0
+      warning(['Likelihood drop of ' num2str(deltaL) ' after update of w.']);
+    end
+    
+    model.sigma = quasinew('nppcaSigmaObjective',model.sigma, options, ...
+                           'nppcaSigmaGradient',model, expectations, varY, Y);
+    L = nppcaLikelihoodBound(model, expectations, varY, Y);
+    deltaL = oldL - L;
+    oldL = L;
+    if deltaL < 0
+      warning(['Likelihood drop of ' num2str(deltaL) ' after update of sigma.']);
+    end
+    
+    expectations = nppcaEstep(model, expectations, varY, Y);  
+    L = nppcaLikelihoodBound(model, expectations, varY, Y);
+    deltaL = 1;
+    oldL = L;
+    
+    
   % plots the data points with the respective (averaged) errors
   if display
     set(ppcaCentrePoint, 'Xdata', model.mu(1), 'Ydata', model.mu(2));
@@ -118,9 +120,11 @@ while  deltaL > 1e-5 & counter < maxIters
     drawnow
   end
   fprintf('Iteration number: %d\n', counter);
-end
-if counter >= maxIters
-  fprintf('Warning maximum iterations exceeded.\n')
-end
   
+  end
+  if counter >= maxIters
+    fprintf('Warning maximum iterations exceeded.\n')
+    
+  end
+toc
 

@@ -1,4 +1,4 @@
-function f = newtonUpdate(model, expectations, varY, Y)
+function f = newtonUpdate(model, expectations, B, X)
 %NEWTONUPDATE performs a Newton update for the sigma dependence of
 %the likelihood.
-f = model.sigma - nppcaSigmaGradient(model, expectations, varY, Y)/nppcaSigmaCurvature(model, expectations, varY, Y);
+f = model.sigma - newtonStep(model, expectations, B, X);
