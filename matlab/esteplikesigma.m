@@ -1,2 +1,4 @@
-function f=esteplikesigma(sigma,mu,w,B,V,N,d,q,xmean,var,trvar);
- f=esteplike2(mu,w,sigma,B,V,N,d,q,xmean,var,trvar);
+function f=esteplikesigma(sigma, model, expectations, B, V);
+
+model.sigma = sigma;
+f = nppcaLikelihoodBound(model, expectations, B, V);

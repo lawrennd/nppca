@@ -12,12 +12,12 @@ d=g(1);  %d is the dimensionality of the readings, usually ~10000
 h=min(B(:));
 B=B;
 V=V;
-mu=mean(V'); %initialises the mean vector to the empirical mean
+model.mu=mean(V'); %initialises the mean vector to the empirical mean
              %Initialises the parameters of the LVM.
 q=input('How many directions do you want to retain?\n');
 
 tic;
-  sigma=0.1;
+  model.sigma=0.1;
   
   options = foptions;
   %options(9) = 1;
@@ -26,26 +26,26 @@ tic;
   options(3)=1e-4;
   options(14)=5000;
   %Initialises and starts the optimisation
-  G=cov((V-mu'*ones(1,N))'./N);
+  G=cov((V-model.mu'*ones(1,N))'./N);
   
   [s,z]=pca(G,q);
   %I use pca to initialise the factors;
-  w=z(:)';  
+  model.W=z(:)';  
   L=1;
   L1=0;   
-  k=[w,sigma,mu]; %defines long vector with all parameters.
+  k=[model.W,model.sigma,model.mu]; %defines long vector with all parameters.
   t=0;
   x=reshape(k(1:d*q),d,q);
-  sigma=k(d*q+1);
-  mu=k(d*q+2:end);
+  model.sigma=k(d*q+1);
+  model.mu=k(d*q+2:end);
   U=zeros(d,N);
   for i=1:N   %computes the inverses of the matrices M_n
     
-    F(:,:,i)=diag((sigma^2*ones(d,1)+B(:,i)).^(-1));
+    F(:,:,i)=diag((model.sigma^2*ones(d,1)+B(:,i)).^(-1));
     M(:,:,i)=inv(x'*F(:,:,i)*x+eye(q));
-    xmean(:,:,i)=M(:,:,i)*x'*F(:,:,i)*(V(:,i)-mu');
-    var(:,:,i)=M(:,:,i)+xmean(:,:,i)*xmean(:,:,i)';
-    trvar(i)=trace(var(:,:,i));
+    expectations.x(:,:,i)=M(:,:,i)*x'*F(:,:,i)*(V(:,i)-model.mu');
+    expectations.xxT(:,:,i)=M(:,:,i)+expectations.x(:,:,i)*expectations.x(:,:,i)';
+    expectations.xTx(i)=trace(expectations.xxT(:,:,i));
   end 
   while abs((L1-L)/(abs(L)))>0.0001,
     t=t+1;
@@ -53,10 +53,10 @@ tic;
     t
     
     %E-step
-    L=feval('esteplike',k,B,V,N,d,q,xmean,var,trvar);
+    L=feval('esteplike',k,B,V,N,d,q,expectations.x,expectations.xxT,expectations.xTx);
     %M-step
-    k=feval('mstep',k,B,V,N,d,q,xmean,var,trvar);
-    L1=feval('esteplike',k,B,V,N,d,q,xmean,var,trvar);
+    k=feval('mstep',k,B,V,N,d,q,expectations.x,expectations.xxT,expectations.xTx);
+    L1=feval('esteplike',k,B,V,N,d,q,expectations.x,expectations.xxT,expectations.xTx);
     if L1>L
       beep
       error('Che cazzo fai?\n');
@@ -64,26 +64,26 @@ tic;
     else
     end
     x=reshape(k(1:d*q),d,q);
-    sigma=k(d*q+1);
-    mu=k(d*q+2:end);
+    model.sigma=k(d*q+1);
+    model.mu=k(d*q+2:end);
     for i=1:N %computes the inverses of the matrices M_n
       
       M(:,:,i)=inv(x'*F(:,:,i)*x+eye(q));
-      xmean(:,i)=M(:,:,i)*x'*F(:,:,i)*(V(:,i)-mu');
-      var(:,:,i)=M(:,:,i)+xmean(:,:,i)*xmean(:,:,i)';
-      trvar(i)=trace(var(:,:,i));
+      expectations.x(:,i)=M(:,:,i)*x'*F(:,:,i)*(V(:,i)-model.mu');
+      expectations.xxT(:,:,i)=M(:,:,i)+expectations.x(:,:,i)*expectations.x(:,:,i)';
+      expectations.xTx(i)=trace(expectations.xxT(:,:,i));
       
       
     end 
    
   end
-  w=k(1:d*q);
-  sigma=k(d*q+1);
-  mu=k(d*q+2:end);
-  wML=reshape(w,d,q);
+  model.W=k(1:d*q);
+  model.sigma=k(d*q+1);
+  model.mu=k(d*q+2:end);
+  wML=reshape(model.W,d,q);
 toc
 beep
-save results wML sigma mu
+save results wML model.sigma model.mu
 fprintf('Number of iterations used by EM algorythm\n')
 t
 fprintf('Output saved in results.mat\n')

@@ -1,18 +1,21 @@
-function f=estepgradlike2(sigma, mu,w,B,V,N,d,q,xmean,var,trvar)
-     %ESTEPGRADLIKE computes the gradient of the complete likelihood of estep;
+function f=estepgradlike2(sigma, model, expectations, B, V)
 
+% ESTEPGRADLIKE computes the gradient of the complete likelihood of estep;
 
-x=reshape(w,d,q);
+N = size(V, 2);
+d = size(V, 1);
+q = size(expectations.x, 1);
+x=reshape(model.W,d,q);
 for i=1:N 
-  F(:,:,i)=diag((sigma^2*ones(d,1)+B(:,i)).^(-1));
+  F(:,:,i)=diag((model.sigma^2*ones(d,1)+B(:,i)).^(-1));
   Q(:,:,i)=(F(:,:,i).^2);
-  s(i)=-2*((V(:,i)-mu)'*Q(:,:,i)*(V(:,i)-mu))*sigma;
-  z(i)=2*trace((F(:,:,i)))*sigma;
-  s2(i)=-2*trace(x'*Q(:,:,i)*x*var(:,:,i))*sigma;
-  s1(i)=(4*xmean(:,i)'*x'*Q(:,:,i)*(V(:,i)-mu))*sigma;
-  G(:,:,i)=-(F(:,:,i)*(2*(V(:,i)-mu)*xmean(:,i)'-2*x*var(:,:,i)));
+  s(i)=-2*((V(:,i)-model.mu)'*Q(:,:,i)*(V(:,i)-model.mu))*model.sigma;
+  z(i)=2*trace((F(:,:,i)))*model.sigma;
+  s2(i)=-2*trace(x'*Q(:,:,i)*x*expectations.xxT(:,:,i))*model.sigma;
+  s1(i)=(4*expectations.x(:,i)'*x'*Q(:,:,i)*(V(:,i)-model.mu))*model.sigma;
+  G(:,:,i)=-(F(:,:,i)*(2*(V(:,i)-model.mu)*expectations.x(:,i)'-2*x*expectations.xxT(:,:,i)));
   Sigma(i)=s(i)+z(i)+s1(i)+s2(i);
-  Mu(:,i)=F(:,:,i)*(2*mu-2*V(:,i)+2*x*xmean(:,i));
+  Mu(:,i)=F(:,:,i)*(2*model.mu-2*V(:,i)+2*x*expectations.x(:,i));
 end
 GI=sum(G,3);
 SI=sum(Sigma);
