@@ -1,4 +1,5 @@
-% DEMOC1I Simple demo of probabilistic PCA with noise on gata3 dataset.
+% DEMOC1Igata3Vcf4 Simple demo of probabilistic PCA with noise on
+% reduced gata3 dataset with variance reduced by 4.
 
 % Fix a seed so that results are repeatable.
 randn('seed', 2e5);
@@ -11,7 +12,13 @@ latentDim = 7;
 options = nppcaOptions;
 
 % Load first 20 points from OC1 data.
-[Y, varY] = nppcaLoadData('OC1');
+Y=load('../../gMOS/data/MU_setB_e_mmgmos.txt');
+varY=load('../../gMOS/data/MU_setB_large_var_mmgmos.txt');
+
+probes=probes(5501:6000);
+annotation=annotation(5501:6000);
+Y=Y(5501:6000,:);
+varY=varY(5501:6000,:);
 
 % Initialise the model --- reset to PCA.
 [model, expectations] = nppcaInit(Y, varY, latentDim);
@@ -132,3 +139,6 @@ end
 
 model = nppcaRemoveRedundancy(model);
 expectations = nppcaEstep(model, expectations, varY, Y);  
+
+save resultsGata3 model expectations Y varY
+figure, nppcaProfilePlotter(model,expectations,Y, varY,454,'gata3')

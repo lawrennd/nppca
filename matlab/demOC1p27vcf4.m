@@ -1,4 +1,4 @@
-% DEMOC1I Simple demo of probabilistic PCA with noise on gata3 dataset.
+% DEMOC1P27vcf4 Simple demo of probabilistic PCA with noise on p27 dataset.
 
 % Fix a seed so that results are repeatable.
 randn('seed', 2e5);
@@ -11,7 +11,11 @@ latentDim = 7;
 options = nppcaOptions;
 
 % Load first 20 points from OC1 data.
-[Y, varY] = nppcaLoadData('OC1');
+[probes,annotation,Y,varY] = nppcaLoadData('OC1B');
+probes=probes(3501:4000);
+annotation=annotation(3501:4000);
+Y=Y(3501:4000,:);
+varY=varY(3501:4000,:)/4;
 
 % Initialise the model --- reset to PCA.
 [model, expectations] = nppcaInit(Y, varY, latentDim);
@@ -125,10 +129,12 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
   end
   fprintf('Iteration number: %d\n', counter);
 end
-print -depsc finalfigure
 if counter >= options.maxIters
   fprintf('Warning maximum iterations exceeded.\n')
 end
 
 model = nppcaRemoveRedundancy(model);
 expectations = nppcaEstep(model, expectations, varY, Y);  
+
+save resultsp27vcf4 model expectations Y varY
+figure, nppcaProfilePlotter(model,expectations,Y, varY,160,'p27')

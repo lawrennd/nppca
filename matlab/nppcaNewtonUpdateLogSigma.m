@@ -7,7 +7,8 @@ sigma = model.sigma;
 deltaL1 = 1;
 maxIters = 10;
 counter2 = 0;
-while deltaL1 > 1e-3 & counter2 <= 10
+step=1;
+while deltaL1 > 1e-5 & counter2 <= 10 & step > 1e-5 
   deltaL = -1;
   counter2 = counter2 + 1;
   oldL = nppcaSigmaObjective(sigma, ...
@@ -27,6 +28,7 @@ while deltaL1 > 1e-3 & counter2 <= 10
   %fprintf('Now Sigma is %2.4f\n', sigma);
   %~/
 end
+step;
 function step = newtonStep(sigma, model, expectations, varY, Y)
 
 % NEWTONSTEP Wrapper function for gradient with respect to sigma.

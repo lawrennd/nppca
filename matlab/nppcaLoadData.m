@@ -1,4 +1,4 @@
-function [Y, varY] = nppcaLoadData(dataset)
+function [probes,annotation,Y, varY] = nppcaLoadData(dataset)
 
 % NPPCALOADDATA Load a dataset for demonstrating noisy PPCA.
 
@@ -20,12 +20,30 @@ switch dataset
    varY = trigamma(alpha);
 
  case 'OC1'
+   [probes, alphaA, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
+                       'data/signalOC1A.txt']);
+   [probes, alphaB, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
+                       'data/signalOC1B.txt']);
+   alpha = [alphaA; alphaB];
+   alphaLim = 1e-6;
+   alpha(find(alpha<1e-6)) = 1e-6;
+   
+   Y = digamma(alpha);
+   varY = trigamma(alpha);
+ 
+ case 'OC1A'
    [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
                        'data/signalOC1A.txt']);
-   
    alphaLim = 1e-6;
-%   alpha = alpha(1:1000,:);
-
+   alpha(find(alpha<1e-6)) = 1e-6;
+   
+   Y = digamma(alpha);
+   varY = trigamma(alpha);
+ 
+ case 'OC1B'
+   [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
+                       'data/signalOC1B.txt']);
+   alphaLim = 1e-6;
    alpha(find(alpha<1e-6)) = 1e-6;
    
    Y = digamma(alpha);
