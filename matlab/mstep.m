@@ -7,7 +7,7 @@ sigma=k(q*d+1);
 mu=(k(q*d+2:end))';
 x=reshape(w,d,q);
 for i=1:N 
-  G(:,i)=((sigma^2*ones(d,1)+B(:,i)).^(-1)).*(V(:,i)-x*xmean(:,i)');
+  G(:,i)=((sigma^2*ones(d,1)+B(:,i)).^(-1)).*(V(:,i)-x*xmean(:,i));
   
 end
 Q=sum(((sigma^2*ones(d,N)+B).^(-1)),2);

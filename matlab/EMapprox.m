@@ -47,7 +47,7 @@ tic;
     var(:,:,i)=M(:,:,i)+xmean(:,:,i)*xmean(:,:,i)';
     trvar(i)=trace(var(:,:,i));
   end 
-  while abs(L1-L)>0.0001*sqrt(d),
+  while abs((L1-L)/(abs(L)))>0.0001,
     t=t+1;
     fprintf('Step number');
     t
