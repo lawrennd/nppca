@@ -20,7 +20,7 @@ Y = trueY ...
     + randn(numData, dataDim).*sqrt(varY);
 
 % Number of EM iterations.
-maxIters = 10;
+maxIters = 50;
 options = foptions; % optimisation options for Sigma.
 
 % Initialise the model.
@@ -73,7 +73,7 @@ deltaL = 1;
 
 counter=0;
 tic
-  while  deltaL > 1e-5 & counter < maxIters
+  while  abs(deltaL) > 1e-5 & counter < maxIters
   
     counter=counter+1;
     
@@ -105,7 +105,7 @@ tic
     
     expectations = nppcaEstep(model, expectations, varY, Y);  
     L = nppcaLikelihoodBound(model, expectations, varY, Y);
-    deltaL = 1;
+%    deltaL = 1;
     oldL = L;
     
     

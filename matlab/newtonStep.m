@@ -25,5 +25,9 @@ end
 Grad = sum(Sigma);
 Curv = sum(SIgma)*model.sigma + sum(Sigma)/model.sigma;
 
-g = Grad/Curv;
-
+step=Grad/Curv;
+if abs(step) > 0.1*model.sigma
+  g = 0.2*step;
+else
+  g = Grad/Curv;
+end
