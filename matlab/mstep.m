@@ -13,6 +13,8 @@ end
 Q=sum(((sigma^2*ones(d,N)+B).^(-1)),2);
 
 MU=(Q.\(sum(G,2)));
+%MU=mu;
+
 for i=1:N
   H(:,:,i)=(((sigma^2*ones(d,1)+B(:,i)).^(-1)).*(V(:,i)-MU))*xmean(:,i)';
   for j=1:d
@@ -27,13 +29,13 @@ end
 
 for i=1:N
   s(i)=((V(:,i)-MU)'*(V(:,i)-MU));
-  s1(i)=(2*xmean(:,i)'*NW'*(V(:,i)-MU));
-  s2(i)=trace(NW*var(:,:,i)*NW');
+  s1(i)=(2*xmean(:,i)'*x'*(V(:,i)-MU));
+  s2(i)=trace(x*var(:,:,i)*x');
   z(i)=sum(B(:,i));
 end
-si=(sum(s-s1+s2-z)/(N*d));
+si=(sum(s-s1+s2+z)/(N*d));
 if si>0
-SI=sqrt(si);  
+SI=sigma;  
   f=[NW(:)',SI,MU'];
 else
   fprintf('You are driving sigma to zero!\n');
