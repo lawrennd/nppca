@@ -20,12 +20,12 @@ q=1;
 tic;
 %  sigma=0.1;
   
-%  options = foptions;
-  %options(9) = 1;
-%  options(1) = 1;
-%  options(2)=1e-4;
-%  options(3)=1e-4;
-%  options(14)=5000;
+  options = foptions;
+  options(9) = 1;
+  options(1) = 1;
+  options(2)=1e-4;
+  options(3)=1e-4;
+  options(14)=5000;
   
   %Selects the two dimensional case for sexy visualisation purposes.
   %Initialises and starts the optimisation
