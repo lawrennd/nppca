@@ -4,7 +4,7 @@
 randn('seed', 2e5);
 rand('seed', 2e5);
 
-stepChecks = 0; % Whether to check likelihood after each update.
+stepChecks = 1; % Whether to check likelihood after each update.
 display = 1; % whether or not to display progress in a figure.
 [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
                     'data/signalOC1A.txt']);
@@ -14,8 +14,8 @@ alphaLim = 1e-6;
 
 alpha(find(alpha<1e-6)) = 1e-6;
 
-Y = digamma(alpha(:, 1:2));
-varY = trigamma(alpha(:, 1:2));
+Y = digamma(alpha);
+varY = trigamma(alpha);
 
 numData = size(Y, 1);
 dataDim = size(Y, 2);
@@ -23,7 +23,7 @@ latentDim = 1;
 
 
 % Number of EM iterations.
-maxIters = 50;
+maxIters = 1000;
 options = foptions; % optimisation options for Sigma.
 
 % Initialise the model.
@@ -63,13 +63,14 @@ expectations = nppcaEstep(model, expectations, varY, Y);
 % Compute the starting likelihood.
 oldL = nppcaLikelihoodBound(model, expectations, varY, Y);
 maxDeltaL = 1;
-
+checkEvery = 10;
 counter=0;
-while  maxDeltaL > 1e-5 & counter < maxIters
+while  maxDeltaL > 1e-5*checkEvery & counter < maxIters
   maxDeltaL = 0;
   counter=counter+1;
     
   model.mu = nppcaUpdateMu(model, expectations, varY, Y);
+  fprintf('Hmph ... mu is %2.4f %2.4f\n', model.mu(1), model.mu(2));
   if stepChecks
     [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
                                   varY, Y, oldL, 'mu');
@@ -77,27 +78,33 @@ while  maxDeltaL > 1e-5 & counter < maxIters
   end
 
   model.W = nppcaUpdateW(model, expectations, varY, Y);
+  fprintf('Mmmmm ... W is %2.4f %2.4f\n', model.W(1), model.W(2));
   if stepChecks
     [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
                                   varY, Y, oldL, 'W');
     maxDeltaL = max([maxDeltaL deltaL]);
   end
-  
+%  model.sigma = quasinew('nppcaSigmaObjective',model.sigma, options, ...
+%                         'nppcaSigmaGradient',model, expectations, varY, Y);
   model.sigma = nppcaNewtonUpdateSigma(model,expectations,varY, Y);
+  fprintf('Ahhh ... sigma is %2.4f\n', model.sigma);
   if stepChecks
     [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
-                                  varY, Y, oldL, 'sigma');
+                                          varY, Y, oldL, 'sigma');
     maxDeltaL = max([maxDeltaL deltaL]);
   end
-
   expectations = nppcaEstep(model, expectations, varY, Y);  
   if stepChecks
     [deltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
                                   varY, Y, oldL, 'estep');
     maxDeltaL = max([maxDeltaL deltaL]);
   else
-    [maxDeltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
-                                  varY, Y, oldL, 'estep');
+    if ~rem(counter, checkEvery)
+      [maxDeltaL, oldL] = nppcaLikelihoodCheck(model, expectations, ...
+                                               varY, Y, oldL, 'All params');
+    else
+      maxDeltaL = 1;
+    end
   end
   
   

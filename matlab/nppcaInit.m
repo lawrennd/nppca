@@ -13,4 +13,5 @@ else
   model.sigma = val;
 end
 model.W = V*diag(sqrt(s-model.sigma^2));  
+
 model.mu = mean(X);

@@ -59,8 +59,8 @@ end
 Grad = sum(Sigma);
 Curv = sum(curvature)*sigma + sum(Sigma)/sigma;
 %/~
-%fprintf('Ohhh, the curvature is %2.4f! The gradient is %2.4f\n', Curv, ...
-%        Grad);
+fprintf('Ohhh, the curvature is %2.4f! The gradient is %2.4f\n', Curv, ...
+        Grad);
 %~/
 if Curv < 0
   Curv = 1/eta;
