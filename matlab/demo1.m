@@ -10,10 +10,8 @@ dataDim = 2; % data dimension.
 latentDim = 1;
 
 % Number of EM iterations.
-maxIters = 10;
+maxIters = 200;
 options = foptions; % optimisation options for Sigma.
-options(9) = 1;
-options(1) = 1;
 
 logVals = zeros(numData, dataDim);
 vals = gammarnd(3, 0.3, numData, 1);
@@ -29,12 +27,12 @@ B = B/10;
 model = nppcaInit(X, latentDim);
 
 % Initialise the expectations
-expectations.x = zeros(latentDim, 1, numData);
+expectations.x = zeros(numData, latentDim);
 expectations.xxT = zeros(latentDim, latentDim, numData);
-expectations.xTx = zeros(1, numData);
+expectations.xTx = zeros(numData, 1);
 
 
-% Plot the data and ellispses indicating uncertainty.
+% Plot the data and ellipses indicating uncertainty.
 plot(X(:, 1), X(:, 2), 'r.');
 hold on;
 theta = 0:0.02:2*pi;
@@ -49,11 +47,11 @@ z = model.W/norm(model.W);
 s = eig(model.W*model.W');
 r = [z [-z(2); z(1)]];
 ellipse = r*[sqrt(norm(model.W))*cos(theta); model.sigma*sin(theta)];
-ppcaCovHandle = line(model.mu(1)*ones(1,size(theta, 2))+ellipse(1, :),model.mu(2)*ones(1,size(theta, 2))+ellipse(2,:));
+ppcaCovHandle = line(model.mu(1)*ones(1,size(theta, 2))+ellipse(1, :), ...
+                     model.mu(2)*ones(1,size(theta, 2))+ellipse(2, :));
 
 % Do an E-step
 expectations = nppcaEstep(model, expectations, B, X);
-
 
 % Compute the starting likelihood.
 oldL = nppcaLikelihoodBound(model, expectations, B, X);

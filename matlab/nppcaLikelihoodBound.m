@@ -7,13 +7,21 @@ function f=nppcaLikelihoodBound(model, expectations, B, X)
 numData = size(X, 1);
 dataDim = size(X, 2);
 
+z = zeros(numData, 1);
+s = zeros(numData, 1);
+s1 = zeros(numData, 1);
+s3 = zeros(numData, dataDim);
+
+sigma2 = model.sigma*model.sigma;
 for i = 1:numData   
-  z(i) = sum(log((model.sigma^2*ones(dataDim,1)+B(i, :)')));  
-  s(i) = (X(i, :)-model.mu)*(((model.sigma^2*ones(dataDim,1)+B(i, :)').^(-1)).*(X(i, :)-model.mu)');
-  s1(i) = (expectations.x(:,i)'*model.W'*(((model.sigma^2*ones(dataDim,1)+B(i, :)').^(-1)).*((X(i, :)-model.mu)')));
+  xHat = X(i, :) - model.mu;
+  Binv = 1./(sigma2*ones(dataDim,1) + B(i, :)');
+  z(i) = -sum(log(Binv));  
+  s(i) = xHat*(Binv.*xHat');
+  s1(i) = expectations.x(i, :)*model.W'*(Binv.*xHat');
   for j = 1:dataDim
-    s3(i,j) = trace(model.W(j,:)'*(((model.sigma^2+B(i, j))^(-1))*model.W(j,:))*expectations.xxT(:,:,i));          
+    s3(i, j) = Binv(j)*model.W(j,:)*expectations.xxT(:,:,i)*model.W(j,:)';     
   end
-  s2 = sum(s3,2)';
+  s2 = sum(s3,2);
 end
-f = sum(z+expectations.xTx+s-2*s1+s2);
+f = sum(z + expectations.xTx + s - 2*s1 + s2);

@@ -11,7 +11,7 @@ for i = 1:numData
   s(i) = -2*((X(i, :) - model.mu)*F2*(X(i, :) - model.mu)')*model.sigma;
   z(i) = 2*trace(F)*model.sigma;
   s2(i) = -2*trace(model.W'*F2*model.W*expectations.xxT(:,:,i))*model.sigma;
-  s1(i) = (4*expectations.x(:,i)'*model.W'*F2*(X(i, :) - model.mu)')*model.sigma;
+  s1(i) = (4*expectations.x(i, :)*model.W'*F2*(X(i, :) - model.mu)')*model.sigma;
   Sigma(i) = s(i)+z(i)+s1(i)+s2(i);
 end
 g = sum(Sigma);
