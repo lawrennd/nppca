@@ -17,11 +17,11 @@ set(h, 'linewidth', 2)
 set(h, 'linestyle', '--')
 set(gca, 'fontsize', 20)
 set(gca, 'fontname', 'helvetica')
-set(gca,'ylim', [-15 5])
+%set(gca,'ylim', [-5 5])
 set(gca, 'xlim', [-0.3 14]);
 set(gca, 'xtick', [0:2:14])
 hold off
-ylabel([geneName,' expression levels']);
+ylabel(['log expression levels']);
 xlabel('days');
 
 

@@ -12,8 +12,8 @@ options = nppcaOptions;
 
 
 % Load first 20 points from OC1 data.
-[probeNames, Y] = readCNS_DATA('../../gMOS/data/brainData_exprs.csv');
-[probeNames, varY] = readCNS_DATA('../../gMOS/data/brainData_standDev.txt');
+[probeNames, Y] = readCNS_DATA('../data/brainData_exprs.csv');
+[probeNames, varY] = readCNS_DATA('../data/brainData_standDev.txt');
 
 varY=varY.^2;
 varY(find(varY<1e-6))=1e-6;

@@ -1,25 +1,24 @@
-% DEMOC1Igata3Vcf4 Simple demo of probabilistic PCA with noise on
-% reduced gata3 dataset with variance reduced by 4.
+% DEMOC1I2 Simple demo of probabilistic PCA with noise on gata3 dataset.
 
 % Fix a seed so that results are repeatable.
 randn('seed', 2e5);
 rand('seed', 2e5);
 colordef white
 % We request four latent dimensions, but model only uses 3.
-latentDim = 7;
+latentDim = 3;
 
 % Set up the options.
 options = nppcaOptions;
 
 % Load first 20 points from OC1 data.
-[probes,annotation,Y,varY] = nppcaLoadData('OC1B');
-probes=probes(5501:6000);
-annotation=annotation(5501:6000);
-Y=Y(5501:6000,:);
-varY=varY(5501:6000,:);
+Y = readCNS_DATA1('../data/datasetA_e_mmgmos_mean.txt');
+varY = readCNS_DATA1('../data/datasetA_var_mmgmos.txt');
+Y(find(Y<1e-6)) = 1e-6;
+Y = Y(1:200,:);
+varY = varY(1:200,:);
 
 % Initialise the model --- reset to PCA.
-[model, expectations] = nppcaInit(Y, varY, latentDim);
+[model, expectations] = nppcaFAInit(Y, varY, latentDim);
 
 if options.display > 1
   % Plot the data and ellipses indicating uncertainty.
@@ -130,7 +129,6 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
   end
   fprintf('Iteration number: %d\n', counter);
 end
-
 if counter >= options.maxIters
   fprintf('Warning maximum iterations exceeded.\n')
 end
@@ -138,5 +136,28 @@ end
 model = nppcaRemoveRedundancy(model);
 expectations = nppcaEstep(model, expectations, varY, Y);  
 
-save resultsGata3 model expectations Y varY
-figure, nppcaProfilePlotter(model,expectations,Y, varY,454,'gata3')
+save resultsCNS1 model expectations
+MD=model.W(12:21,:);
+MGlio=model.W([22:31,end],:);
+Rhab=model.W(32:41,:);
+NCer=model.W([3,10:12],:);
+PNET=model.W([1,2,4:9],:);
+figure, plot3(MGlio(:,1),MGlio(:,2),MGlio(:,3),'bd');
+hold on
+plot3(MD(:,1),MD(:,2),MD(:,3),'r+');
+hold on
+plot3(Rhab(:,1),Rhab(:,2),Rhab(:,3),'m>');
+hold on
+plot3(NCer(:,1),NCer(:,2),NCer(:,3),'go');
+hold on
+plot3(PNET(:,1),PNET(:,2),PNET(:,3),'c*');
+grid on
+figure, plot(MGlio(:,1),MGlio(:,2),'bd');
+hold on
+plot(MD(:,1),MD(:,2),'r+');
+hold on
+plot(Rhab(:,1),Rhab(:,2),'m>');
+hold on
+plot(NCer(:,1),NCer(:,2),'go');
+hold on
+plot(PNET(:,1),PNET(:,2),'c*');

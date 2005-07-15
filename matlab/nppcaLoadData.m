@@ -8,7 +8,7 @@ function [probes,annotation,Y, varY] = nppcaLoadData(dataset)
 switch dataset
  
  case 'OC1_20'
-   [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
+   [probes, alpha, annotation,geneName] = gmosReadTxt(['../../gMOS/' ...
                        'data/signalOC1A.txt']);
    
    alpha = alpha(1:20, :);
@@ -20,10 +20,8 @@ switch dataset
    varY = trigamma(alpha);
 
  case 'OC1'
-   [probes, alphaA, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
-                       'data/signalOC1A.txt']);
-   [probes, alphaB, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
-                       'data/signalOC1B.txt']);
+   [probes, alphaA, annotation, geneName] = gmosReadTxt(['data/signalOC1A.txt']);
+   [probes, alphaB, annotation, geneName] = gmosReadTxt(['data/signalOC1B.txt']);                       
    alpha = [alphaA; alphaB];
    alphaLim = 1e-6;
    alpha(find(alpha<1e-6)) = 1e-6;
@@ -32,8 +30,7 @@ switch dataset
    varY = trigamma(alpha);
  
  case 'OC1A'
-   [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
-                       'data/signalOC1A.txt']);
+   [probes, alpha, annotation, geneName] = gmosReadTxt([ 'data/signalOC1A.txt']);                      
    alphaLim = 1e-6;
    alpha(find(alpha<1e-6)) = 1e-6;
    
@@ -41,8 +38,8 @@ switch dataset
    varY = trigamma(alpha);
  
  case 'OC1B'
-   [probes, alpha, annotation, geneName] = gmosReadTxt(['../../gMOS/' ...
-                       'data/signalOC1B.txt']);
+   [probes, alpha, annotation, geneName] = gmosReadTxt(['data/signalOC1B.txt']);
+                       
    alphaLim = 1e-6;
    alpha(find(alpha<1e-6)) = 1e-6;
    

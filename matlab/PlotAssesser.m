@@ -1,11 +1,8 @@
-function f=CNSPlotAssesser(model,nComp);
+function f=PlotAssesser(model,nComp);
 
-%PLOTASSESSER Assesses the clustering of PCAor NPPCA using a 1NN
-%classifier for CNS dataset.
+%PLOTASSESSER Assesses the clustering power of a plot using a 1NN
+%classifier.
 npts=size(model.W,1);
-
-
-
 X=model.W(:,1:nComp);
 Distances=dist2(X,X);
 Distances=Distances-diag(diag(Distances))+diag(100*ones(1, npts));

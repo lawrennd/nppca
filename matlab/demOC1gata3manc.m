@@ -1,4 +1,4 @@
-% DEMOC1Igata3Vcf4 Simple demo of probabilistic PCA with noise on
+% DEMOC1Igata3manc Simple demo of probabilistic PCA with noise on
 % reduced gata3 dataset with variance reduced by 4.
 
 % Fix a seed so that results are repeatable.
@@ -15,10 +15,11 @@ options = nppcaOptions;
 Y=load('../../gMOS/data/MU_setB_e_mmgmos.txt');
 varY=load('../../gMOS/data/MU_setB_large_var_mmgmos.txt');
 
-probes=probes(5501:6000);
-annotation=annotation(5501:6000);
-Y=Y(5501:6000,:);
-varY=varY(5501:6000,:);
+ YLim = 1e-6;
+   
+   Y(find(Y<1e-6)) = 1e-6;
+Y=Y(5001:5500,:);
+varY=varY(5001:5500,:);
 
 % Initialise the model --- reset to PCA.
 [model, expectations] = nppcaInit(Y, varY, latentDim);
@@ -125,20 +126,14 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
     ellipse = r*[sqrt(s(1, 1))*cos(theta); sqrt(s(2, 2))*sin(theta)];
     set(ppcaCovHandle, 'Xdata', mu(1)*ones(1,size(theta, 2))+ellipse(1,:), 'Ydata', mu(2)*ones(1,size(theta, 2))+ellipse(2,:));
     drawnow
-    if counter < 5
-%      fprintf('Press any key to continue\n');
-%      pause
-    end
+   
   end
   fprintf('Iteration number: %d\n', counter);
 end
-print -depsc finalfigure
-if counter >= options.maxIters
-  fprintf('Warning maximum iterations exceeded.\n')
-end
+
 
 model = nppcaRemoveRedundancy(model);
 expectations = nppcaEstep(model, expectations, varY, Y);  
 
 save resultsGata3 model expectations Y varY
-figure, nppcaProfilePlotter(model,expectations,Y, varY,454,'gata3')
+figure, nppcaProfilePlotter(model,expectations,Y, varY,484,'gata3')

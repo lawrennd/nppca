@@ -1,5 +1,5 @@
-% DEMOC1Igata3Vcf4 Simple demo of probabilistic PCA with noise on
-% reduced gata3 dataset with variance reduced by 4.
+% DEMOC1IPPCAINIT Simple demo of probabilistic PCA with noiseusing
+% gata3 data and initialising with PPCA.
 
 % Fix a seed so that results are repeatable.
 randn('seed', 2e5);
@@ -12,20 +12,17 @@ latentDim = 7;
 options = nppcaOptions;
 
 % Load first 20 points from OC1 data.
-[probes,annotation,Y,varY] = nppcaLoadData('OC1B');
-probes=probes(5501:6000);
-annotation=annotation(5501:6000);
-Y=Y(5501:6000,:);
-varY=varY(5501:6000,:);
+[probes, annotations, Y, varY] = nppcaLoadData('OC1_20');
+numData = size(Y, 1);
+dataDim = size(Y, 2);
 
 % Initialise the model --- reset to PCA.
-[model, expectations] = nppcaInit(Y, varY, latentDim);
+[model, expectations] = PpcaInit(Y, varY, latentDim,numData);
 
 if options.display > 1
   % Plot the data and ellipses indicating uncertainty.
   % We use only first two data dimensions.
-  numData = size(Y, 1);
-  dataDim = size(Y, 2);
+ 
   set(gca, 'fontsize', 20)
   set(gca, 'fontname', 'helvetica')
   
@@ -58,7 +55,7 @@ if options.display > 1
   ppcaCovHandle = line(mu(1)*ones(1,size(theta, 2))+ellipse(1, :), ...
                        mu(2)*ones(1,size(theta, 2))+ellipse(2, :), ...
                        'linewidth', 2, 'color', [0 0 1]);
-  print -depsc figure1
+  print -depsc ppcainitialisation
   fprintf('Press any key to continue\n');
   pause
 end
@@ -130,13 +127,10 @@ while (maxDeltaL > options.tol & counter < options.maxIters)
   end
   fprintf('Iteration number: %d\n', counter);
 end
-
+print -depsc output
 if counter >= options.maxIters
   fprintf('Warning maximum iterations exceeded.\n')
 end
 
 model = nppcaRemoveRedundancy(model);
 expectations = nppcaEstep(model, expectations, varY, Y);  
-
-save resultsGata3 model expectations Y varY
-figure, nppcaProfilePlotter(model,expectations,Y, varY,454,'gata3')
