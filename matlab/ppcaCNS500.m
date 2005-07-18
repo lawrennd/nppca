@@ -1,4 +1,5 @@
-%PPCA for the CNS data
+% PPCA for the CNS data
+
 [probes,Y, geneName] =readCNS_DATA('../data/Dataset_A_multiple_tumor_samples.txt');
 Y=Y(1:200,:);
 

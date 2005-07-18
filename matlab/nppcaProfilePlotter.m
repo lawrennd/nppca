@@ -1,7 +1,6 @@
 function nppcaProfilePlotter(model,expectations,Y,varY,ngene,geneName)
 
-%NPPCAPROFILEPLOTTER shows comparison of reconstructed and
-%original profile for genes.
+% NPPCAPROFILEPLOTTER shows comparison of reconstructed and original profile for genes.
 
 
 

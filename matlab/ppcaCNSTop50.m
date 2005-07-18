@@ -1,4 +1,5 @@
-%PPCA for the CNS data
+% PPCA for the CNS data
+
 [probes,Y] =readCNS_DATA('../data/top_mas4.txt');
 
 [PcCoeff, PcVec] = pca(Y,3);
