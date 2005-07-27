@@ -3,6 +3,8 @@ function [deltaL, L] = nppcaLikelihoodCheck(model, expectations, varY, ...
 
 % NPPCALIKELIHOODCHECK Compute the difference in likelhoods.
 
+% NPPCA
+
 L = nppcaLikelihoodBound(model, expectations, varY, Y);
 deltaL = oldL - L;
 oldL = L;

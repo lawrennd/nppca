@@ -2,6 +2,8 @@ function g = nppcaSigmaGradient(sigma, model, expectations, B, X)
 
 % NPPCASIGMAGRADIENT Wrapper function for gradient with respect to sigma.
 
+% NPPCA 
+
 numData = size(X, 1);
 dataDim = size(X, 2);
 
