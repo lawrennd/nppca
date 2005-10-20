@@ -13,6 +13,6 @@ latentDim = 7;
 options = nppcaOptions;
 
 % Load first 20 points from OC1 data.
-[Y, varY] = nppcaLoadData('OC1');
+[probes, annotations, Y, varY] = nppcaLoadData('OC1');
 
 [model, expectations] = nppcaMaster(Y, varY, latentDim, options);
