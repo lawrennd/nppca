@@ -1,6 +1,6 @@
 function f = nppcaSigmaObjective(sigma, model, expectations, B, V);
 
-% NPPCASIGMAOBJECTIVE Wrapper function for bjective as a function of Sigma.
+% NPPCASIGMAOBJECTIVE Wrapper function for objective as a function of Sigma.
 
 % NPPCA
 

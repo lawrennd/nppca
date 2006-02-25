@@ -2,7 +2,7 @@ function nppcaProfilePlotter(model,expectations,Y,varY,ngene,geneName)
 
 % NPPCAPROFILEPLOTTER shows comparison of reconstructed and original profile for genes.
 
-
+% NPPCA
 
 days = [0:9 11 14];
 

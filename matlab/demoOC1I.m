@@ -6,7 +6,7 @@
 randn('seed', 2e5);
 rand('seed', 2e5);
 colordef white
-% We request four latent dimensions, but model only uses 3.
+% We request seven latent dimensions, but model only uses 3.
 latentDim = 7;
 
 % Set up the options.
