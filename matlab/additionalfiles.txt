@@ -1,0 +1,6 @@
+# These are files that should be packaged for the NPPCA software
+dir: html
+~/mlprojects/nppca/html/index.html
+dir: data
+~/mlprojects/nppca/matlab/data/signalOC1A.txt
+~/mlprojects/nppca/matlab/data/signalOC1B.txt
