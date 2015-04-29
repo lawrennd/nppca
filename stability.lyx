@@ -1,0 +1,259 @@
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Title
+
+Stability of KL minimisers under perturbation.
+\layout Standard
+
+We consider a toy example to demonstrate the stability of the solution to
+ a constrained minimisation problem.
+ We have proved elsewhere the following result: suppose we have a kernel
+ 
+\begin_inset Formula $\mathbf{K}_{y}$
+\end_inset 
+
+ which we want to approximate with a kernel 
+\begin_inset Formula $\mathbf{K}_{x}$
+\end_inset 
+
+.
+ Consider the SVD decompositions
+\begin_inset Formula \begin{eqnarray}
+\mathbf{K}_{y} & = & U\Lambda U^{T}\nonumber \\
+\mathbf{K}_{x} & = & VDV^{T}\label{eq:svdDec}\end{eqnarray}
+
+\end_inset 
+
+of the two kernels.
+ Then minimising the KL divergence 
+\begin_inset Formula $\textrm{KL}\left(N_{y}\Vert N_{x}\right)$
+\end_inset 
+
+ is equivalent to maximinsing the quantities
+\begin_inset Formula \begin{equation}
+a_{i}=\sum_{j=1}^{d}\lambda_{j}\left(\mathbf{u}_{j}^{T}\mathbf{v}_{i}\right)^{2}\label{eq:objFun}\end{equation}
+
+\end_inset 
+
+where 
+\begin_inset Formula $d$
+\end_inset 
+
+ is the dimensionality of the space, 
+\begin_inset Formula $\lambda$
+\end_inset 
+
+ are the diagonal elements in 
+\begin_inset Formula $\Lambda$
+\end_inset 
+
+ and 
+\begin_inset Formula $\mathbf{u}_{j}$
+\end_inset 
+
+ and 
+\begin_inset Formula $\mathbf{v}_{i}$
+\end_inset 
+
+ are the eigenvectors of 
+\begin_inset Formula $\mathbf{K}_{y}$
+\end_inset 
+
+ and 
+\begin_inset Formula $\mathbf{K}_{x}$
+\end_inset 
+
+ respectively.
+\layout Standard
+
+The power in this is that it provides us with a much easier way to impose
+ constraints on the approximating kernel 
+\begin_inset Formula $\mathbf{K}_{x}$
+\end_inset 
+
+.
+ For instance, suppose we were interested in performing a PCA-like dimensional
+ reduction, but wanted the result to be a block diagonal matrix.
+ Then we'd only need to constrain the 
+\begin_inset Formula $\mathbf{v}$
+\end_inset 
+
+s in 
+\begin_inset LatexCommand \ref{eq:objFun}
+
+\end_inset 
+
+ to lie in particular subspaces.
+ What we want to show is the stability of these solutions.
+ Suppose we wanted to identify the principal direction, and forced 
+\begin_inset Formula $\mathbf{v}$
+\end_inset 
+
+ to be nonzero only in the first 
+\begin_inset Formula $q$
+\end_inset 
+
+ components.
+ Immagine that 
+\begin_inset Formula $\mathbf{K}_{y}$
+\end_inset 
+
+has only two nonzero eigenvalues, say 
+\begin_inset Formula $\lambda_{1}>\lambda_{2}$
+\end_inset 
+
+.
+ Suppose the relative eigenvectors lay in the span of the first 
+\begin_inset Formula $q$
+\end_inset 
+
+ coordinates.
+ Then the obvious constrained solution would coincide with the nonconstrained
+ solution and would be 
+\begin_inset Formula $\mathbf{v}=\mathbf{u}_{1}$
+\end_inset 
+
+.
+ Suppose now that 
+\begin_inset Formula $\mathbf{u}_{1}$
+\end_inset 
+
+is perturbed adding components in the last 
+\begin_inset Formula $d-q$
+\end_inset 
+
+ directions, so that 
+\begin_inset Formula $\mathbf{u}_{1}=\mathbf{u}_{1}^{q}+\mathbf{u}_{1}^{d-q}$
+\end_inset 
+
+, still maintaining 
+\begin_inset Formula $\mathbf{u}_{1}^{T}\mathbf{u}_{2}=0$
+\end_inset 
+
+.
+ The question is, how do we change 
+\begin_inset Formula $\mathbf{v}$
+\end_inset 
+
+ to keep this into account?
+\layout Standard
+
+Let's start by writing 
+\begin_inset Formula $\mathbf{v}=p_{1}\frac{\mathbf{u}_{1}^{q}}{\left|\mathbf{u}_{1}^{q}\right|}+p_{2}\mathbf{u}_{2}$
+\end_inset 
+
+ (obviously 
+\begin_inset Formula $\mathbf{v}$
+\end_inset 
+
+ will not acquire any component along the eigenvectors with eigenvalue zero,
+ as this would not contribute to the sum in 
+\begin_inset LatexCommand \ref{eq:objFun}
+
+\end_inset 
+
+).
+ We can rewrite our objective function in terms of 
+\begin_inset Formula $p_{1,2}$
+\end_inset 
+
+ as
+\begin_inset Formula \[
+a=\lambda_{1}p_{1}^{2}\left|\mathbf{u}_{1}^{q}\right|^{2}+\lambda_{2}p_{2}^{2}\left|\mathbf{u}_{2}\right|^{2}=\lambda_{1}p_{1}^{2}\left|\mathbf{u}_{1}^{q}\right|^{2}+\lambda_{2}p_{2}^{2}\]
+
+\end_inset 
+
+as 
+\begin_inset Formula $\mathbf{u}_{2}$
+\end_inset 
+
+ is still a normalised eigenvector.
+ Now we impose normalisation of 
+\begin_inset Formula $\mathbf{v}$
+\end_inset 
+
+ which implies
+\begin_inset Formula \begin{equation}
+p_{1}^{2}+p_{2}^{2}=1.\label{eq:normalConstr}\end{equation}
+
+\end_inset 
+
+Defining 
+\begin_inset Formula $z=p_{1}^{2}$
+\end_inset 
+
+ we can rewrite the last two equations as
+\begin_inset Formula \begin{eqnarray*}
+p_{2}^{2} & = & 1-z\\
+a & = & z\left(\lambda_{1}\left|\mathbf{u}_{1}^{q}\right|^{2}-\lambda_{2}\right)+\lambda_{2}.\end{eqnarray*}
+
+\end_inset 
+
+Therefore, as 
+\begin_inset Formula $a$
+\end_inset 
+
+ is linear in 
+\begin_inset Formula $z$
+\end_inset 
+
+, its maximum is readily found and depends on the sign of the coefficient
+ 
+\begin_inset Formula $\alpha=\lambda_{1}\left|\mathbf{u}_{1}^{q}\right|^{2}-\lambda_{2}$
+\end_inset 
+
+; if 
+\begin_inset Formula $\alpha>0,$
+\end_inset 
+
+then the maximum is obtained for the maximum of 
+\begin_inset Formula $z$
+\end_inset 
+
+ at 
+\begin_inset Formula $z=p_{1}^{2}=1$
+\end_inset 
+
+; if 
+\begin_inset Formula $\alpha<0$
+\end_inset 
+
+, the maximum is obtained for 
+\begin_inset Formula $z=0$
+\end_inset 
+
+ and 
+\begin_inset Formula $p_{2}=1.$
+\end_inset 
+
+ Hence the behaviour of the maximum is discontinuous: it's aligned with
+ the (truncated) highest eigenvector for perturbations up to a certain value,
+ and then switches instantly inline with the other eigenvector (thus changing
+ to an orthogonal direction).
+ This is easily extended to more than one eigenvector and more than one
+ approximating direction.
+ I think it's really nice.
+\the_end
