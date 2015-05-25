@@ -1,0 +1,35 @@
+
+<head>
+<title>MATLAB Software for Accounting for Probe-level Noise in Principal Component Analysis of Microarray Data</title>
+
+</head>
+<body><div class="section">
+
+<h1>Microarray Probe Level Noise in PCA</h1>
+
+<p>The NPPCA software is available from
+<a href="http://www.cs.man.ac.uk/neill-bin/software/downloadForm.cgi?toolbox=nppca">here</a>.</p>
+
+<p>Current release is 0.111.</p>
+
+<p>The software also relies on Ian Nabney's Netlab toolbox. It is available from <a href="http://www.ncrg.aston.ac.uk/netlab/">here</a> and it needs the digamma function, a version is available from Tom Minka's `lightspeed' toolbox <a href="http://research.microsoft.com/~minka/software/lightspeed/">here</a>.
+
+<p> You should also download the latest version of the NDLUTIL toolbox utility files <a href="http://www.cs.man.ac.uk/~neill/ndlutil/downloadFiles">from here</a>.
+
+Make sure that the NDLUTIL has priority over the lightspeed toolboxes as they both contain different versions of the logdet function.
+
+<h2>Demos in the Toolbox</h2>
+
+The toolbox can be used  to recreate the experiments in the bioinformatics paper. However running on full data sets takes overnight on a desktop computer. We therefore suggest that you test the implementation using the script.
+
+<p><code>
+&gt;&gt; demoOC1gata3
+</code>
+
+<p>This will plot simple results from a reduced version of the OC1 data set.
+
+<p><center><img src="demoOC1gata3.png" width="49%"><br>gata3 profile before (blue solid line) and after (red dash line) analysis with PCA. Error bars are indicated which show for the blue line the variance in the measurements and for the red the posterior profile estimate variance.</p>
+
+
+</div></body>
+
