@@ -1,0 +1,26 @@
+File versionlist for the NPPCA toolbox version 0.11 Monday, Jul 18, 2005 at 14:25:02
+
+RALoadData.m	 vs 1.1	 Fri Jul 15 15:48:26 2005
+clusterLoadData.m	 vs 1.1	 Fri Jul 15 15:48:27 2005
+demCNS.m	 vs 1.3	 Mon Jul 18 13:20:21 2005
+demNppcaLoadData.m	 vs 1.1	 Fri Jul 15 15:48:27 2005
+demoOC1I.m	 vs 1.1	 Fri Apr 29 15:31:01 2005
+demoOC1gata3.m	 vs 1.1	 Fri Apr 29 15:31:32 2005
+gmosReadTxt.m	 vs 1.1	 Fri Apr 29 15:34:00 2005
+nppcaEstep.m	 vs 1.7	 Sat Dec 11 21:28:37 2004
+nppcaFAInit.m	 vs 1.1	 Fri Apr 29 15:32:18 2005
+nppcaInit.m	 vs 1.6	 Sat Dec 11 21:28:37 2004
+nppcaInit100.m	 vs 1.1	 Fri Jul 15 15:48:30 2005
+nppcaLikelihoodBound.m	 vs 1.6	 Mon Dec 13 15:40:12 2004
+nppcaLoadData.m	 vs 1.4	 Fri Jul 15 15:59:57 2005
+nppcaMaster.m	 vs 1.1	 Fri Apr 29 15:34:38 2005
+nppcaNewtonUpdateLogSigma.m	 vs 1.3	 Fri Jan 14 13:02:36 2005
+nppcaNewtonUpdateSigma.m	 vs 1.5	 Sat Dec 11 21:28:37 2004
+nppcaOptions.m	 vs 1.4	 Fri Jul 15 15:59:57 2005
+nppcaRemoveRedundancy.m	 vs 1.1	 Sat Dec 11 21:28:37 2004
+nppcaSigmaObjective.m	 vs 1.1	 Thu Dec  9 12:46:15 2004
+nppcaUpdateCinv.m	 vs 1.1	 Sat Dec 11 21:28:37 2004
+nppcaUpdateM.m	 vs 1.1	 Sat Dec 11 21:28:37 2004
+nppcaUpdateMu.m	 vs 1.3	 Thu Dec  9 16:20:32 2004
+nppcaUpdateW.m	 vs 1.3	 Thu Dec  9 16:20:32 2004
+reconstruct.m	 vs 1.1	 Fri Apr 29 15:35:29 2005

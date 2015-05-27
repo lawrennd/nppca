@@ -1,0 +1,47 @@
+
+
+ [probes,X,annotation, geneName]=gmosReadTxt(file)
+
+ expectations = nppcaEstep(model, expectations, varY, Y)
+
+ [model, expectations] = nppcaFAInit(Y, varY, latentDim)
+
+ [model, expectations] = nppcaInit(Y, varY, latentDim);
+
+ f=nppcaLikelihoodBound(model, expectations, varY, Y)
+
+ [deltaL, L] = nppcaLikelihoodCheck(model, expectations, varY, ...
+%                                        Y, oldL, param);
+
+ [probes,annotation,Y, varY] = nppcaLoadData(dataset)
+
+ [model, expectations] = nppcaMaster(Y, varY, latentDim, options)
+
+ sigma = nppcaNewtonUpdateLogSigma(model, expectations, varY, Y)
+ function step = newtonStep(sigma, model, expectations, varY, Y)
+
+ sigma = nppcaNewtonUpdateSigma(model, expectations, varY, Y)
+ function step = newtonStep(sigma, model, expectations, varY, Y)
+
+ options = nppcaOptions;
+
+ nppcaProfilePlotter(model,expectations,Y,varY,ngene,geneName)
+
+ model = nppcaRemoveRedundancy(model)
+
+ g = nppcaSigmaCurvature(model, expectations, B, X)
+
+ g = nppcaSigmaGradient(sigma, model, expectations, B, X)
+
+ f = nppcaSigmaObjective(sigma, model, expectations, B, V);
+
+ Cinv = nppcaUpdateCinv(model, expectations, B, X)
+
+ m = nppcaUpdateM(model, expectations, B, X)
+
+ mu = nppcaUpdateMu(model, expectations, B, X)
+
+ W = nppcaUpdateW(model, expectations, B, X)
+
+ [S, varS]=reconstruct(model, expectations)
+
