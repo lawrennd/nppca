@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>nppca by lawrennd</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>nppca</h1>
+        <p>MATLAB code for PCA in data with heteroschedastic noise. Originally targeted at gene expression analysis.</p>
+
+        <p class="view"><a href="https://github.com/lawrennd/nppca">View the Project on GitHub <small>lawrennd/nppca</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/lawrennd/nppca/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/lawrennd/nppca/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/lawrennd/nppca">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="microarray-probe-level-noise-in-pca" class="anchor" href="#microarray-probe-level-noise-in-pca" aria-hidden="true"><span class="octicon octicon-link"></span></a>Microarray Probe Level Noise in PCA</h1>
+
+<p>The NPPCA software is available from here.</p>
+
+<p>Current release is 0.111.</p>
+
+<p>The software also relies on Ian Nabney's Netlab toolbox. It is available
+from <a href="http://www.aston.ac.uk/eas/research/groups/ncrg/resources/netlab/">here</a> and it needs the
+digamma function, a version is available from Tom Minka's 'lightspeed'
+toolbox
+<a href="http://research.microsoft.com/en-us/um/people/minka/software/lightspeed/">here</a>.</p>
+
+<p>You should also download the latest version of the NDLUTIL toolbox
+utility files <a href="/ndlutil/downloadFiles/">from
+here</a>. Make sure
+that the NDLUTIL has priority over the lightspeed toolboxes as they both
+contain different versions of the logdet function.</p>
+
+<h2>
+<a id="demos-in-the-toolbox" class="anchor" href="#demos-in-the-toolbox" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos in the Toolbox</h2>
+
+<p>The toolbox can be used to recreate the experiments in the
+bioinformatics paper. However running on full data sets takes overnight
+on a desktop computer. We therefore suggest that you test the
+implementation using the script.</p>
+
+<div class="highlight highlight-matlab"><pre><span class="pl-k">&gt;&gt; </span>demoOC1gata3</pre></div>
+
+<p>This will plot simple results from a reduced version of the OC1 data
+set.</p>
+
+<p><img src="demoOC1gata3.png" alt=""></p>
+
+<p>gata3 profile before (blue solid line) and after (red dash line)
+analysis with PCA. Error bars are indicated which show for the blue line
+the variance in the measurements and for the red the posterior profile
+estimate variance.</p>
+
+<p>Page last modified on Fri Jan 5 12:50:49 GMT 2007.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/lawrennd">lawrennd</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-62968536-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
